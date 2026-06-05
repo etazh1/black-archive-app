@@ -594,6 +594,7 @@ function safeUrl(u){
   if(/^images\/[A-Za-z0-9._-]+$/.test(u)) return u;
   return '';
 }
+function pluralPost(n){ const m10=n%10,m100=n%100; if(m10===1&&m100!==11)return n+' пост'; if(m10>=2&&m10<=4&&(m100<10||m100>=20))return n+' поста'; return n+' постов'; }
 function fmtNum(n){ if(!n)return null; if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+'M'; if(n>=1e3)return(n/1e3).toFixed(1).replace('.0','')+'K'; return String(n); }
 function fmtDate(s){ if(!s)return''; const d=new Date(s); if(isNaN(d))return esc(s); const MONTHS=['ЯНВ','ФЕВ','МАР','АПР','МАЙ','ИЮН','ИЮЛ','АВГ','СЕН','ОКТ','НОЯ','ДЕК']; return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; }
 
@@ -874,7 +875,7 @@ searchInput.addEventListener('input',e=>{
   } else {
     searchEmpty.classList.remove('visible');
     fillMasonry(searchGrid, list, false);
-    searchCount.textContent=list.length+' постов';
+    searchCount.textContent=pluralPost(list.length);
     searchCount.classList.add('visible');
   }
 });
