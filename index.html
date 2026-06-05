@@ -419,6 +419,27 @@ body{
   -ms-overflow-style:none;
 }
 .search-results::-webkit-scrollbar{ display:none; width:0; height:0; }
+.search-count{
+  display:none;
+  font-family:var(--font-mono);
+  font-size:9px; color:var(--muted); letter-spacing:.1em;
+  margin-bottom:10px;
+}
+.search-count.visible{ display:block; }
+.search-empty{
+  display:none;
+  flex-direction:column; align-items:center; justify-content:center;
+  min-height:55vh; text-align:center; gap:10px;
+}
+.search-empty.visible{ display:flex; }
+.search-empty-title{
+  font-family:var(--font-hd);
+  font-size:42px; color:var(--border); letter-spacing:.12em;
+}
+.search-empty-sub{
+  font-family:var(--font-mono);
+  font-size:10px; color:var(--muted); letter-spacing:.04em;
+}
 
 /* ── RESPONSIVE ── */
 @media(max-width:360px){
@@ -530,7 +551,14 @@ body{
 <!-- Search results overlay — empty until typing -->
 <div class="search-overlay" id="searchOverlay">
   <div class="top-veil visible" id="searchVeil"></div>
-  <div class="search-results"><div class="masonry" id="searchGrid"></div></div>
+  <div class="search-results">
+    <div class="search-count" id="searchCount"></div>
+    <div class="masonry" id="searchGrid"></div>
+    <div class="search-empty" id="searchEmpty">
+      <div class="search-empty-title">ОЙ, НИЧЕГО!</div>
+      <div class="search-empty-sub">По такому запросу ничего не нашлось :(</div>
+    </div>
+  </div>
 </div>
 
 <script src="posts.js"></script>
@@ -805,14 +833,21 @@ bestOpts.forEach(opt=>{
 const overlay=document.getElementById('searchOverlay');
 const searchInput=document.getElementById('searchInput');
 const searchGrid=document.getElementById('searchGrid');
+const searchCount=document.getElementById('searchCount');
+const searchEmpty=document.getElementById('searchEmpty');
 const barWrapEl=document.getElementById('barWrap');
 let searchMode=false;
 
+function clearSearchUI(){
+  searchGrid.innerHTML='';
+  searchCount.classList.remove('visible');
+  searchEmpty.classList.remove('visible');
+}
 function openSearch(){
   searchMode=true;
   barWrapEl.classList.add('search-open');
   overlay.classList.add('active');
-  searchGrid.innerHTML='';            // empty until user types
+  clearSearchUI();
   setTimeout(()=>searchInput.focus(),180);
 }
 function closeSearch(){
@@ -820,7 +855,7 @@ function closeSearch(){
   barWrapEl.classList.remove('search-open');
   overlay.classList.remove('active');
   searchInput.value='';
-  searchGrid.innerHTML='';
+  clearSearchUI();
 }
 document.getElementById('btnSearch').addEventListener('click',openSearch);
 
@@ -831,9 +866,18 @@ closeEl.addEventListener('click',e=>{ e.preventDefault(); closeSearch(); });
 
 searchInput.addEventListener('input',e=>{
   const q=e.target.value.trim().toLowerCase();
-  if(!q){ searchGrid.innerHTML=''; return; }   // results only when typing
+  if(!q){ clearSearchUI(); return; }
   const list=sortedPosts('date-desc').filter(p=>((p.title||'')+' '+(p.body||'')+' '+(p.text||'')).toLowerCase().includes(q));
-  fillMasonry(searchGrid, list, false);
+  if(list.length===0){
+    searchGrid.innerHTML='';
+    searchCount.classList.remove('visible');
+    searchEmpty.classList.add('visible');
+  } else {
+    searchEmpty.classList.remove('visible');
+    fillMasonry(searchGrid, list, false);
+    searchCount.textContent=list.length+' постов';
+    searchCount.classList.add('visible');
+  }
 });
 searchInput.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); searchInput.blur(); } });
 
