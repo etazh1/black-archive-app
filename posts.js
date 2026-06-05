@@ -15,8 +15,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 911,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 15,
+    "forwards": 13
   },
   {
     "id": 689,
@@ -27,8 +27,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 665,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 19,
+    "forwards": 4
   },
   {
     "id": 682,
@@ -39,8 +39,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 668,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 20,
+    "forwards": 27
   },
   {
     "id": 677,
@@ -51,20 +51,20 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 1550,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 38,
+    "forwards": 134
   },
   {
     "id": 676,
     "date": "2026-02-21",
-    "title": "🚨",
-    "body": "Релиз Seedance 2.0 по API откладывается\nМаркетолог Atlas Cloud (официальный партнёр ByteDance) \nнаписала\n,\n что релиз Seedance 2.0 по публичному API, запланированный на 24 февраля, отложен на неопределённый срок.\nПричина — введение гораздо более жёстких ограничений после скандала с авторскими правами. И это подтвердили сами разрабы. Пользователи уже массово жалуются, что банятся даже самые невинны",
+    "title": "🚨 Релиз Seedance 2.0 по API откладывается",
+    "body": "Маркетолог Atlas Cloud (официальный партнёр ByteDance) \nнаписала\n,\n что релиз Seedance 2.0 по публичному API, запланированный на 24 февраля, отложен на неопределённый срок.\nПричина — введение гораздо более жёстких ограничений после скандала с авторскими правами. И это подтвердили сами разрабы. Пользователи уже массово жалуются, что банятся даже самые невинны",
     "image": "images/676_ffcfe4.jpg",
     "type": "video",
     "tags": [],
     "views": 785,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 18,
+    "forwards": 27
   },
   {
     "id": 675,
@@ -75,32 +75,32 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 604,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 14,
+    "forwards": 19
   },
   {
     "id": 674,
     "date": "2026-02-20",
-    "title": "Победитель фестиваля AI-анимации Frame Forward получит полноценный прокат в США  Международный фестиваль Frame Forward, посвящённый анимации с использованием AI",
-    "body": "",
+    "title": "AMC Theaters отказывается показывать AI-фильм победителя фестиваля Frame Forward",
+    "body": "Как сообщает The Hollywood Reporter, крупнейшая сеть кинотеатров в США и в мире AMC Theaters отказалась показывать короткометражку «Thanksgiving Day» Игоря Алфёрова в своих залах после волны критики в сети.",
     "image": null,
     "type": "text",
     "tags": [],
     "views": 574,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 13,
+    "forwards": 5
   },
   {
     "id": 673,
     "date": "2026-02-20",
-    "title": "В Голливуде начинается тряска  После того, как нейро-схватка Тома Круза и Брэда Питта, сгенерированная на Seedance 2.0, разлетелась по интернету, Ассоциация кин",
-    "body": "",
+    "title": "Мэттью Макконахи уверен, что ИИ-актёры неизбежно «зайдут» в Оскар",
+    "body": "Мэттью МакКонахи и Тимоти Шаламе в Техасском университете обсудили, как искусственный интеллект изменит кино",
     "image": "images/673_a49bf8.jpg",
     "type": "video",
     "tags": [],
     "views": 608,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 15,
+    "forwards": 22
   },
   {
     "id": 672,
@@ -111,8 +111,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 527,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 18,
+    "forwards": 9
   },
   {
     "id": 671,
@@ -123,20 +123,32 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 609,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 14,
+    "forwards": 13
+  },
+  {
+    "id": 670,
+    "date": "2026-02-17",
+    "title": "The Dor Brothers показали новую короткометражку Apex",
+    "body": "ПВ коммьюнити начинается хайп вокруг короткометражки «Apex» от The Dor Brothers, которую они опубликовали (https://x.com/thedorbrothers/status/2023460644905742577) буквально пару часов назад с байтовой подписью",
+    "image": "images/670_pic.png",
+    "type": "video",
+    "tags": [],
+    "views": 866,
+    "reactions": 31,
+    "forwards": 60
   },
   {
     "id": 669,
     "date": "2026-02-16",
-    "title": "🚨",
-    "body": "ByteDance цензурит Seedance 2.0 из-за угроз голливудских гигантов\nПару дней назад, в Твиттере мелькали сообщения от юзеров, что Seedance 2.0 не пропускает промпты, в которых содержатся наименования IP защищённых авторским правом.\nСегодня цензуру официально подтвердили сами разрабы. По \nсообщению\n BBC, ByteDance взялись вкручивать фильтры в свою революционную модель, после того как весь Голливуд оп",
+    "title": "🚨 ByteDance цензурит Seedance 2.0 из-за угроз голливудских гигантов",
+    "body": "Пару дней назад, в Твиттере мелькали сообщения от юзеров, что Seedance 2.0 не пропускает промпты, в которых содержатся наименования IP защищённых авторским правом.\nСегодня цензуру официально подтвердили сами разрабы. По \nсообщению\n BBC, ByteDance взялись вкручивать фильтры в свою революционную модель, после того как весь Голливуд оп",
     "image": "images/669_ae6406.jpg",
     "type": "video",
     "tags": [],
     "views": 666,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 18,
+    "forwards": 23
   },
   {
     "id": 668,
@@ -147,8 +159,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 1350,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 18,
+    "forwards": 42
   },
   {
     "id": 667,
@@ -159,20 +171,20 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 821,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 11,
+    "forwards": 3
   },
   {
     "id": 666,
-    "date": "2026-02-13",
+    "date": "2026-02-14",
     "title": "В Голливуде начинается тряска, Часть 2",
     "body": "SAG-AFTRA, крупнейший профсоюз, представляющий интересы 160 000 актёров, телеведущих, радиоведущих и других — которые бастовали 118 дней в 2023 году, в том числе и против использования ИИ, тоже \nсделали\n своё заявление:\nSAG-AFTRA поддерживает студии в осуждении вопиющего нарушения, которое стало возможным благодаря новой модели искусственного интеллекта Seedance 2.0 от Bytedance. Нарушение включае",
     "image": "images/666_ef4107.jpg",
     "type": "image",
     "tags": [],
     "views": 772,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 25,
+    "forwards": 21
   },
   {
     "id": 665,
@@ -182,9 +194,9 @@ const POSTS = [
     "image": "images/665_4c91b2.jpg",
     "type": "video",
     "tags": [],
-    "views": 2420,
-    "reactions": 0,
-    "forwards": 0
+    "views": 2424,
+    "reactions": 34,
+    "forwards": 199
   },
   {
     "id": 664,
@@ -195,8 +207,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 875,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 20,
+    "forwards": 19
   },
   {
     "id": 663,
@@ -207,8 +219,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 874,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 14,
+    "forwards": 18
   },
   {
     "id": 662,
