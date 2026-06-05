@@ -922,13 +922,16 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 // ── resize ──
-let rsT;
+let rsT, lastW=window.innerWidth;
 window.addEventListener('resize',()=>{
+  const w=window.innerWidth;
   clearTimeout(rsT);
   rsT=setTimeout(()=>{
-    buildPanel(0,false); buildPanel(1,false); buildPanel(2,false);
     moveIndicator(activeIdx,false);
     if(activeIdx===2){ const act=bestOpts.find(o=>o.dataset.sort===bestSort)||bestOpts[0]; moveBestPill(act,false); }
+    if(w===lastW) return; // only rebuild grids when WIDTH changes (not keyboard open/close)
+    lastW=w;
+    buildPanel(0,false); buildPanel(1,false); buildPanel(2,false);
   },150);
 });
 
