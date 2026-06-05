@@ -542,13 +542,14 @@ if(window.Telegram?.WebApp){
   tg.expand();
   tg.setHeaderColor('#0c0c0c');
   tg.setBackgroundColor('#0c0c0c');
-  // reserve room for Telegram's top control buttons (Закрыть / ⋯)
-  document.body.classList.add('tg-fullscreen');
-  // if the platform exposes safe-area / content insets, prefer those
-  try{
-    const top = (tg.contentSafeAreaInset?.top || 0);
-    if(top>0) document.documentElement.style.setProperty('--tg-top', top+'px');
-  }catch(e){}
+  // reserve room for Telegram's top control buttons only in fullscreen mode
+  if(tg.isFullscreen){
+    document.body.classList.add('tg-fullscreen');
+    try{
+      const top = (tg.contentSafeAreaInset?.top || 0);
+      if(top>0) document.documentElement.style.setProperty('--tg-top', top+'px');
+    }catch(e){}
+  }
 }
 
 const META = (typeof CHANNEL_META!=='undefined')?CHANNEL_META:{username:'',title:'АРХИВ'};
