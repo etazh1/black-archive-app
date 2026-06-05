@@ -179,35 +179,54 @@ body{
 .card-stats-right{ display:flex; align-items:center; }
 .card-stat{ display:flex; align-items:center; gap:3px; font-size:8px; color:var(--muted); letter-spacing:.03em; }
 
-/* ── Лучшие: sub-filter segmented control ── */
+/* ── Лучшие: sub-filter — sticky, pins under status bar on scroll ── */
 .best-filter{
+  position:sticky;
+  top:calc(var(--safe-top) + 8px);
+  z-index:320;
   display:flex;
-  gap:6px;
-  margin:0 0 12px;
+  gap:0;
+  width:100%;
+  max-width:480px;
+  margin:0 auto 14px;
   padding:4px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
+  background:rgba(18,18,20,.65);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  -webkit-backdrop-filter:blur(24px) saturate(200%) brightness(1.06);
+  backdrop-filter:blur(24px) saturate(200%) brightness(1.06);
+  box-shadow:0 6px 20px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.07) inset;
 }
+.best-veil{ z-index:315; height:calc(var(--safe-top) + 56px); }
+.best-pill{
+  position:absolute;
+  top:4px; bottom:4px;
+  border-radius:999px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 2px 8px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+  pointer-events:none; z-index:1;
+  transition:left .52s cubic-bezier(.34,1.3,.5,1), width .52s cubic-bezier(.34,1.3,.5,1);
+  will-change:left,width;
+}
+.best-pill.dragging{ transition:none; }
 .best-opt{
+  position:relative; z-index:2;
   flex:1;
   border:none;
   background:transparent;
   color:rgba(237,233,225,.5);
   font-family:var(--font-mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:.04em;
-  padding:8px 4px;
-  border-radius:12px;
+  padding:11px 6px;
+  border-radius:999px;
   cursor:pointer;
-  transition:background .2s, color .2s;
+  transition:color .25s;
   -webkit-user-select:none; user-select:none;
   touch-action:manipulation;
 }
-.best-opt.active{
-  background:rgba(255,255,255,.12);
-  color:var(--white);
-}
+.best-opt.active{ color:var(--white); }
 .card-stat svg{ width:10px;height:10px;flex-shrink:0;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
 
 .empty{ text-align:center; padding:70px 20px; }
@@ -451,6 +470,7 @@ body{
     <div class="carousel-panel" data-panel="1"><div class="masonry" data-grid="1"></div></div>
     <div class="carousel-panel" data-panel="2">
       <div class="best-filter" id="bestFilter">
+        <div class="best-pill" id="bestPill"></div>
         <button class="best-opt active" data-sort="views">Просмотры</button>
         <button class="best-opt" data-sort="reactions">Лайки</button>
         <button class="best-opt" data-sort="forwards">Репосты</button>
@@ -459,6 +479,9 @@ body{
     </div>
   </div>
 </div>
+
+<!-- Лучшие top darkening veil (fixed) -->
+<div class="best-veil top-veil" id="bestVeil"></div>
 
 <button class="scroll-top" id="scrollTop" type="button" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
@@ -689,6 +712,7 @@ function setActive(idx, animate=true){
     panelEls[idx].classList.add('active');
     window.scrollTo(0, scrollMem[idx]||0);
     syncChromeToScroll();
+    updateBestFilter();
     return;
   }
 
@@ -701,6 +725,7 @@ function setActive(idx, animate=true){
     panelEls[idx].classList.add('active');
     window.scrollTo(0, scrollMem[idx]||0);
     syncChromeToScroll();
+    updateBestFilter();
     // next frame: fade back in
     requestAnimationFrame(()=>{
       requestAnimationFrame(()=>{
@@ -716,18 +741,48 @@ buttons.forEach((btn,idx)=>{
   btn.addEventListener('click',()=>{ if(idx!==activeIdx)haptic('light'); setActive(idx,true); });
 });
 
-// "Лучшие" sub-filter (views / reactions / forwards)
+// ── "Лучшие" sub-filter ──
+const bestFilter=document.getElementById('bestFilter');
+const bestVeil=document.getElementById('bestVeil');
+const bestPill=document.getElementById('bestPill');
 const bestOpts=Array.from(document.querySelectorAll('.best-opt'));
+
+function moveBestPill(opt, animate){
+  const wrap=bestFilter.getBoundingClientRect();
+  const r=opt.getBoundingClientRect();
+  bestPill.classList.toggle('dragging', !animate);
+  bestPill.style.left=(r.left-wrap.left)+'px';
+  bestPill.style.width=r.width+'px';
+  if(!animate){ void bestPill.offsetWidth; bestPill.classList.remove('dragging'); }
+}
+
+// show/hide the fixed Лучшие bar based on active tab
+function updateBestFilter(){
+  const show = activeIdx===2;
+  bestVeil.classList.toggle('visible', show && window.scrollY>10);
+  if(show){
+    const act=bestOpts.find(o=>o.dataset.sort===bestSort)||bestOpts[0];
+    requestAnimationFrame(()=>moveBestPill(act,false));
+  }
+}
+
 bestOpts.forEach(opt=>{
   opt.addEventListener('click',()=>{
     const s=opt.dataset.sort;
     if(s===bestSort)return;
     bestSort=s;
     bestOpts.forEach(o=>o.classList.toggle('active',o===opt));
+    moveBestPill(opt,true);
     haptic('light');
-    buildPanel(2,false);
-    // scroll panel 2 back to top after re-sort
-    if(activeIdx===2) window.scrollTo(0,0);
+    // smooth re-sort: fade grid out, rebuild while invisible, fade in (no jump)
+    const grid=document.querySelector('.masonry[data-grid="2"]');
+    grid.style.transition='opacity .18s ease';
+    grid.style.opacity='0';
+    setTimeout(()=>{
+      buildPanel(2,false);
+      if(activeIdx===2) window.scrollTo(0,0);
+      requestAnimationFrame(()=>{ grid.style.opacity='1'; });
+    },180);
   });
 });
 
@@ -792,6 +847,7 @@ function syncChromeToScroll(){
   if(barHidden){ barHidden=false; barWrap.style.transform='translateX(-50%) translateY(0)'; barWrap.style.pointerEvents=''; }
   topVeil.classList.toggle('visible', y>10);
   scrollTopBtn.classList.toggle('visible', y>600);
+  if(typeof bestVeil!=='undefined'&&bestVeil) bestVeil.classList.toggle('visible', activeIdx===2 && y>10);
 }
 
 window.addEventListener('scroll',()=>{
@@ -799,6 +855,7 @@ window.addEventListener('scroll',()=>{
   const d=y-lastY; lastY=y;
   topVeil.classList.toggle('visible', y>10);
   scrollTopBtn.classList.toggle('visible', y>600);
+  if(bestVeil) bestVeil.classList.toggle('visible', activeIdx===2 && y>10);
   if(searchMode)return;
   if(d>0){ sDelta=Math.min(sDelta+d,HIDE_TH+20); }
   else{ sDelta=Math.max(0,sDelta+d*2); if(barHidden){ barHidden=false; barWrap.style.transform='translateX(-50%) translateY(0)'; barWrap.style.pointerEvents=''; } }
@@ -812,6 +869,7 @@ window.addEventListener('resize',()=>{
   rsT=setTimeout(()=>{
     buildPanel(0,false); buildPanel(1,false); buildPanel(2,false);
     moveIndicator(activeIdx,false);
+    if(activeIdx===2){ const act=bestOpts.find(o=>o.dataset.sort===bestSort)||bestOpts[0]; moveBestPill(act,false); }
   },150);
 });
 
