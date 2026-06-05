@@ -210,7 +210,7 @@ body{
   border-radius:999px;
   background:rgba(255,255,255,.14);
   border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 2px 8px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
   pointer-events:none; z-index:1;
   transition:left .52s cubic-bezier(.34,1.3,.5,1), width .52s cubic-bezier(.34,1.3,.5,1);
   will-change:left,width;
@@ -312,11 +312,11 @@ body{
 .bar-btn.active span{ color:var(--white); }
 
 .bar-indicator{
-  position:absolute; top:5px; bottom:5px;
+  position:absolute; top:4px; bottom:4px;
   border-radius:999px;
   background:rgba(255,255,255,.14);
   border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 2px 8px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.2) inset;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
   pointer-events:none; z-index:1;
   transform-origin:center center;
   /* liquid spring — gentle overshoot like iOS */
@@ -703,9 +703,8 @@ function moveIndicator(idx, animate){
   const btn=buttons[idx];
   const island=document.getElementById('barIsland').getBoundingClientRect();
   const r=btn.getBoundingClientRect();
-  const INSET=3;
-  const targetLeft=r.left-island.left+INSET;
-  const targetWidth=r.width-INSET*2;
+  const targetLeft=r.left-island.left-1;
+  const targetWidth=r.width;
 
   if(!animate){
     indicator.style.transition='none';
@@ -794,7 +793,7 @@ function moveBestPill(opt, animate){
   const wrap=bestFilter.getBoundingClientRect();
   const r=opt.getBoundingClientRect();
   bestPill.classList.toggle('dragging', !animate);
-  bestPill.style.left=(r.left-wrap.left)+'px';
+  bestPill.style.left=(r.left-wrap.left-1)+'px';
   bestPill.style.width=r.width+'px';
   if(!animate){ void bestPill.offsetWidth; bestPill.classList.remove('dragging'); }
 }
