@@ -358,6 +358,7 @@ def parse_posts(html):
             "tags":      [],
             "views":     views,
             "reactions": reactions,
+            "forwards":  0,   # репосты — впиши вручную (веб-превью их не отдаёт)
         })
 
     return posts, min_id
@@ -380,6 +381,39 @@ def write_js(posts, title):
     ]
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
+
+
+def merge_manual_values(new_posts):
+    """
+    Читает существующий posts.js и переносит вручную вписанные значения
+    forwards и reactions в свежие посты (чтобы повторный запуск их не обнулял).
+    Сопоставление по id поста.
+    """
+    if not os.path.exists(OUT_FILE):
+        return
+    try:
+        with open(OUT_FILE, "r", encoding="utf-8") as f:
+            txt = f.read()
+        # вытащить JSON-массив POSTS
+        m = re.search(r"const POSTS\s*=\s*(\[.*?\]);", txt, re.S)
+        if not m:
+            return
+        old = json.loads(m.group(1))
+        old_by_id = {p.get("id"): p for p in old}
+        kept = 0
+        for p in new_posts:
+            o = old_by_id.get(p.get("id"))
+            if not o:
+                continue
+            # переносим только если в старом было вручную проставлено (>0)
+            if o.get("forwards", 0):
+                p["forwards"] = o["forwards"]; kept += 1
+            if o.get("reactions", 0) and not p.get("reactions", 0):
+                p["reactions"] = o["reactions"]; kept += 1
+        if kept:
+            print(f"  ↻ Перенесено вручную проставленных значений: {kept}")
+    except Exception as e:
+        print(f"  ⚠️  Не удалось перенести ручные значения: {e}")
 
 
 def main():
@@ -456,6 +490,11 @@ def main():
         return
 
     all_posts.sort(key=lambda p: p["id"], reverse=True)
+
+    # Preserve manually-entered forwards/reactions from a previous posts.js
+    # (web preview can't read them, so you fill them by hand — don't wipe them)
+    merge_manual_values(all_posts)
+
     write_js(all_posts, channel_title)
 
     # Count downloaded images

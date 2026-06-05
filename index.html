@@ -174,8 +174,40 @@ body{
   line-height:1.5; letter-spacing:.02em; margin-top:3px;
   display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
 }
-.card-stats{ display:flex; gap:10px; margin-top:2px; }
+.card-stats{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:2px; }
+.card-stats-left{ display:flex; gap:10px; align-items:center; }
+.card-stats-right{ display:flex; align-items:center; }
 .card-stat{ display:flex; align-items:center; gap:3px; font-size:8px; color:var(--muted); letter-spacing:.03em; }
+
+/* ── Лучшие: sub-filter segmented control ── */
+.best-filter{
+  display:flex;
+  gap:6px;
+  margin:0 0 12px;
+  padding:4px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+}
+.best-opt{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:rgba(237,233,225,.5);
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.04em;
+  padding:8px 4px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:background .2s, color .2s;
+  -webkit-user-select:none; user-select:none;
+  touch-action:manipulation;
+}
+.best-opt.active{
+  background:rgba(255,255,255,.12);
+  color:var(--white);
+}
 .card-stat svg{ width:10px;height:10px;flex-shrink:0;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
 
 .empty{ text-align:center; padding:70px 20px; }
@@ -417,7 +449,14 @@ body{
   <div class="carousel-track" id="carouselTrack">
     <div class="carousel-panel" data-panel="0"><div class="masonry" data-grid="0"></div></div>
     <div class="carousel-panel" data-panel="1"><div class="masonry" data-grid="1"></div></div>
-    <div class="carousel-panel" data-panel="2"><div class="masonry" data-grid="2"></div></div>
+    <div class="carousel-panel" data-panel="2">
+      <div class="best-filter" id="bestFilter">
+        <button class="best-opt active" data-sort="views">Просмотры</button>
+        <button class="best-opt" data-sort="reactions">Лайки</button>
+        <button class="best-opt" data-sort="forwards">Репосты</button>
+      </div>
+      <div class="masonry" data-grid="2"></div>
+    </div>
   </div>
 </div>
 
@@ -517,10 +556,14 @@ function buildCard(post,i,intro){
   const titleH=esc(title.replace(/\n/g,' ').slice(0,120)+(title.length>120?'…':''));
   const bodyH=esc(body.replace(/\n/g,' ').slice(0,140)+(body.length>140?'…':''));
   const dateS=esc(fmtDate(post.date));
-  const v=fmtNum(post.views), r=fmtNum(post.reactions);
+  const v=fmtNum(post.views), r=fmtNum(post.reactions), fw=fmtNum(post.forwards);
   const eye='<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
   const heart='<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
-  const stats=(v||r)?`<div class="card-stats">${v?`<div class="card-stat">${eye}${esc(v)}</div>`:''}${r?`<div class="card-stat">${heart}${esc(r)}</div>`:''}</div>`:'';
+  const share='<svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+  // left side: reactions + forwards (each hidden when 0); right side: views
+  const left=`${r?`<div class="card-stat">${heart}${esc(r)}</div>`:''}${fw?`<div class="card-stat">${share}${esc(fw)}</div>`:''}`;
+  const right=v?`<div class="card-stat">${eye}${esc(v)}</div>`:'';
+  const stats=(left||right)?`<div class="card-stats"><div class="card-stats-left">${left}</div><div class="card-stats-right">${right}</div></div>`:'';
   const txt=`${titleH?`<div class="card-title">${titleH}</div>`:''}${bodyH?`<div class="card-text-body">${bodyH}</div>`:''}`;
 
   if(post.image){
@@ -551,11 +594,15 @@ function fillMasonry(gridEl, list, intro){
 
 // ── three sort orders, one per panel ──
 const SORTS=['date-desc','date-asc','top'];
+let bestSort='views'; // sub-filter for the "Лучшие" tab: views | reactions | forwards
 function sortedPosts(sort){
   let l=[...ALL_POSTS];
   if(sort==='date-desc') l.sort((a,b)=>b.id-a.id);
   if(sort==='date-asc')  l.sort((a,b)=>a.id-b.id);
-  if(sort==='top')       l.sort((a,b)=>(b.views||0)-(a.views||0));
+  if(sort==='top'){
+    const key=bestSort; // views | reactions | forwards
+    l.sort((a,b)=>(b[key]||0)-(a[key]||0));
+  }
   return l;
 }
 
@@ -667,6 +714,21 @@ function setActive(idx, animate=true){
 // tap nav buttons
 buttons.forEach((btn,idx)=>{
   btn.addEventListener('click',()=>{ if(idx!==activeIdx)haptic('light'); setActive(idx,true); });
+});
+
+// "Лучшие" sub-filter (views / reactions / forwards)
+const bestOpts=Array.from(document.querySelectorAll('.best-opt'));
+bestOpts.forEach(opt=>{
+  opt.addEventListener('click',()=>{
+    const s=opt.dataset.sort;
+    if(s===bestSort)return;
+    bestSort=s;
+    bestOpts.forEach(o=>o.classList.toggle('active',o===opt));
+    haptic('light');
+    buildPanel(2,false);
+    // scroll panel 2 back to top after re-sort
+    if(activeIdx===2) window.scrollTo(0,0);
+  });
 });
 
 // ── SEARCH overlay ──
