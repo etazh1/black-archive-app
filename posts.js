@@ -2993,17 +2993,5 @@ const POSTS = [
     "views": 62,
     "reactions": 0,
     "forwards": 0
-  },
-  {
-    "id": 1,
-    "date": "2017-11-05",
-    "title": "Channel created",
-    "body": "",
-    "image": null,
-    "type": "text",
-    "tags": [],
-    "views": 0,
-    "reactions": 0,
-    "forwards": 0
   }
 ];
