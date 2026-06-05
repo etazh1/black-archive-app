@@ -231,8 +231,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 834,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 20,
+    "forwards": 46
   },
   {
     "id": 659,
@@ -243,8 +243,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 1550,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 28,
+    "forwards": 88
   },
   {
     "id": 657,
@@ -254,21 +254,21 @@ const POSTS = [
     "image": "images/657_ea5aac.jpg",
     "type": "video",
     "tags": [],
-    "views": 983,
-    "reactions": 0,
-    "forwards": 0
+    "views": 1012,
+    "reactions": 30,
+    "forwards": 75
   },
   {
     "id": 655,
     "date": "2026-02-08",
-    "title": "Seedance 2.0 и Seedream 5 находятся в закрытом бета-тесте  Официальный аккаунт CapCut в Твиттере подтвердил, что обе модели выйдут совсем скоро и будут доступны",
-    "body": "",
+    "title": "Второе видео в посте выше — тоже интересный случай",
+    "body": "Как утверждает вот этот автор, это не прямая генерация с Seedance 2.0, а с использованием сырого wireframe референса и нескольких изображений на вход",
     "image": "images/655_4b5ffc.jpg",
     "type": "video",
     "tags": [],
     "views": 1130,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 14,
+    "forwards": 21
   },
   {
     "id": 648,
@@ -279,8 +279,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 1020,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 18,
+    "forwards": 37
   },
   {
     "id": 645,
@@ -291,8 +291,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 610,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 19,
+    "forwards": 23
   },
   {
     "id": 644,
@@ -303,8 +303,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 615,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 19,
+    "forwards": 25
   },
   {
     "id": 643,
@@ -315,8 +315,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 700,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 16,
+    "forwards": 18
   },
   {
     "id": 642,
@@ -327,8 +327,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 546,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 13,
+    "forwards": 4
   },
   {
     "id": 639,
@@ -339,8 +339,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 1430,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 24,
+    "forwards": 47
   },
   {
     "id": 633,
@@ -351,8 +351,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 810,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 25,
+    "forwards": 41
   },
   {
     "id": 632,
@@ -363,20 +363,20 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 593,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 15,
+    "forwards": 5
   },
   {
     "id": 626,
     "date": "2026-01-31",
-    "title": "YouTube решил давить слопперов!  YouTube сделали заявление, что с 15 июля перестанет платить авторам низкокачественного помойного AI-контента, который создаётся",
-    "body": "",
+    "title": "YouTube удаляет крупнейшие AI Slop каналы",
+    "body": "В прошлом году новость о том, что YT собирается устроить чистку платформы от слоперов вызвала немало восторга и вот мы в той точке, когда это действительно происходит.",
     "image": "images/626_bc9eaa.jpg",
     "type": "image",
     "tags": [],
     "views": 651,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 24,
+    "forwards": 19
   },
   {
     "id": 624,
@@ -387,20 +387,20 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 580,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 17,
+    "forwards": 26
   },
   {
     "id": 618,
     "date": "2026-01-30",
-    "title": "Google дропнули Project Genie (Genie 3)  Та самая World Model, которая генерирует интерактивные 3D-миры по текстовым промптам или загруженному изображению. По с",
+    "title": "Несколько примеров от тех, кто успел попробовать Project Genie",
     "body": "",
     "image": "images/618_96a286.jpg",
     "type": "video",
     "tags": [],
     "views": 761,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 15,
+    "forwards": 27
   },
   {
     "id": 617,
@@ -411,8 +411,8 @@ const POSTS = [
     "type": "video",
     "tags": [],
     "views": 490,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 13,
+    "forwards": 22
   },
   {
     "id": 616,
@@ -423,8 +423,8 @@ const POSTS = [
     "type": "image",
     "tags": [],
     "views": 600,
-    "reactions": 0,
-    "forwards": 0
+    "reactions": 21,
+    "forwards": 22
   },
   {
     "id": 615,
