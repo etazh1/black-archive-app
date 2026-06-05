@@ -836,7 +836,7 @@ const searchGrid=document.getElementById('searchGrid');
 const searchCount=document.getElementById('searchCount');
 const searchEmpty=document.getElementById('searchEmpty');
 const barWrapEl=document.getElementById('barWrap');
-let searchMode=false;
+let searchMode=false, savedScrollY=0;
 
 function clearSearchUI(){
   searchGrid.innerHTML='';
@@ -845,6 +845,11 @@ function clearSearchUI(){
 }
 function openSearch(){
   searchMode=true;
+  savedScrollY=window.scrollY;
+  document.body.style.overflow='hidden';
+  document.body.style.position='fixed';
+  document.body.style.top='-'+savedScrollY+'px';
+  document.body.style.width='100%';
   barWrapEl.classList.add('search-open');
   overlay.classList.add('active');
   clearSearchUI();
@@ -852,6 +857,11 @@ function openSearch(){
 }
 function closeSearch(){
   searchMode=false;
+  document.body.style.overflow='';
+  document.body.style.position='';
+  document.body.style.top='';
+  document.body.style.width='';
+  window.scrollTo(0,savedScrollY);
   barWrapEl.classList.remove('search-open');
   overlay.classList.remove('active');
   searchInput.value='';
